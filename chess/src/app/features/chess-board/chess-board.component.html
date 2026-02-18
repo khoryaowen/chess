@@ -1,0 +1,97 @@
+@if (gameState()) {
+  <div class="game-container" [attr.data-theme]="settings().boardTheme">
+
+    <!-- Top bar: Player 2 + Exit button -->
+    <div class="player-bar player-bar--top">
+      <div class="player-info">
+        <span class="player-piece" [class.white-piece]="gameSetup()?.player1Color === 'black'" [class.black-piece]="gameSetup()?.player1Color === 'white'">
+          {{ gameSetup()?.player1Color === 'black' ? '♙' : '♟' }}
+        </span>
+        <span class="player-name">{{ scores()?.player2?.name }}</span>
+        <span class="player-score">{{ scores()?.player2?.score }}</span>
+      </div>
+      <button class="exit-btn" (click)="onExitClick()">✕ Exit</button>
+    </div>
+
+    <div class="board-wrapper">
+      <!-- Rank labels left -->
+      <div class="labels rank-labels">
+        @for (label of rankLabels(); track label) {
+          <span class="label">{{ label }}</span>
+        }
+      </div>
+
+      <!-- The board -->
+      <div class="chess-board" [class.theme-wood]="settings().boardTheme === 'wood'" [class.theme-standard]="settings().boardTheme === 'standard'">
+        @for (row of displayedBoard(); track $index; let rowIndex = $index) {
+          @for (square of row; track $index; let colIndex = $index) {
+            <div
+              class="square"
+              [class.light]="isLightSquare(rowIndex, colIndex)"
+              [class.dark]="!isLightSquare(rowIndex, colIndex)"
+              [class.selected]="square.isSelected"
+              [class.legal-target]="square.isLegalTarget"
+              [class.in-check]="square.isCheck"
+              (click)="onSquareClick(rowIndex, colIndex)"
+            >
+              @if (square.piece) {
+                <span class="piece" [class.white-piece]="square.piece.color === 'white'" [class.black-piece]="square.piece.color === 'black'">
+                  {{ getPieceSymbol(square.piece) }}
+                </span>
+              }
+              @if (square.isLegalTarget && !square.piece) {
+                <div class="move-dot"></div>
+              }
+              @if (square.isLegalTarget && square.piece) {
+                <div class="capture-ring"></div>
+              }
+            </div>
+          }
+        }
+      </div>
+
+      <!-- File labels bottom -->
+      <div class="labels file-labels">
+        @for (label of fileLabels(); track label) {
+          <span class="label">{{ label }}</span>
+        }
+      </div>
+    </div>
+
+    <!-- Player 1 info (bottom) -->
+    <div class="player-bar player-bar--bottom">
+      <div class="player-info">
+        <span class="player-piece" [class.white-piece]="gameSetup()?.player1Color === 'white'" [class.black-piece]="gameSetup()?.player1Color === 'black'">
+          {{ gameSetup()?.player1Color === 'white' ? '♙' : '♟' }}
+        </span>
+        <span class="player-name">{{ scores()?.player1?.name }}</span>
+        <span class="player-score">{{ scores()?.player1?.score }}</span>
+      </div>
+      <div class="status-message" [class.in-check-msg]="gameState()?.status === 'check'">
+        {{ getStatusMessage() }}
+      </div>
+    </div>
+
+    <!-- Victory Modal -->
+    @if (isGameOver()) {
+      <app-victory-modal
+        [message]="getWinnerMessage()"
+        [scores]="scores()"
+        (playAgain)="onPlayAgain()"
+        (quit)="onQuit()"
+      />
+    }
+
+    <!-- Confirm Exit Modal -->
+    @if (showExitConfirm()) {
+      <app-confirm-modal
+        title="Quit Game?"
+        message="Your current game progress will be lost."
+        confirmLabel="Quit"
+        cancelLabel="Keep Playing"
+        (confirmed)="onExitConfirmed()"
+        (cancelled)="onExitCancelled()"
+      />
+    }
+  </div>
+}

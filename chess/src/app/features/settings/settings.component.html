@@ -1,0 +1,40 @@
+<div class="settings-container">
+  <div class="settings-card">
+    <button class="back-btn" (click)="goBack()">← Back</button>
+
+    <h2 class="settings-title">Settings</h2>
+
+    <div class="settings-section">
+      <h3 class="section-label">Board Theme</h3>
+      <div class="theme-grid">
+        @for (theme of themes; track theme.id) {
+          <button
+            class="theme-card"
+            [class.active]="settings().boardTheme === theme.id"
+            (click)="setTheme(theme.id)"
+          >
+            <div class="theme-preview">
+              @for (row of [0,1,2,3]; track row) {
+                <div class="preview-row">
+                  @for (col of [0,1,2,3,4,5,6,7]; track col) {
+                    <div
+                      class="preview-cell"
+                      [style.background]="(row + col) % 2 === 0 ? theme.light : theme.dark"
+                    ></div>
+                  }
+                </div>
+              }
+            </div>
+            <div class="theme-info">
+              <span class="theme-name">{{ theme.label }}</span>
+              <span class="theme-desc">{{ theme.description }}</span>
+            </div>
+            @if (settings().boardTheme === theme.id) {
+              <div class="active-badge">✓</div>
+            }
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>

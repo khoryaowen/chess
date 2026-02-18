@@ -1,0 +1,29 @@
+<div class="modal-overlay">
+  <div class="modal-card">
+    <div class="trophy-icon">♛</div>
+    <h2 class="victory-title">{{ message }}</h2>
+
+    @if (scores) {
+      <div class="score-board">
+        <div class="score-row">
+          <span class="score-name">{{ scores.player1.name }}</span>
+          <span class="score-value">{{ scores.player1.score }}</span>
+        </div>
+        <div class="score-divider">–</div>
+        <div class="score-row">
+          <span class="score-name">{{ scores.player2.name }}</span>
+          <span class="score-value">{{ scores.player2.score }}</span>
+        </div>
+      </div>
+    }
+
+    <div class="modal-actions">
+      <button class="btn btn-primary" (click)="playAgain.emit()">
+        ↺ Play Again
+      </button>
+      <button class="btn btn-secondary" (click)="quit.emit()">
+        ✕ Quit
+      </button>
+    </div>
+  </div>
+</div>

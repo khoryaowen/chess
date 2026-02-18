@@ -1,0 +1,32 @@
+<div class="home-container">
+  <div class="home-content">
+    <div class="logo-area">
+      <div class="chess-icon">♟</div>
+      <h1 class="title">Chess</h1>
+      <p class="subtitle">A game of skill & strategy</p>
+    </div>
+
+    <div class="menu-buttons">
+      <button class="btn btn-primary" (click)="navigateToPlay()">
+        <span class="btn-icon">⚔</span>
+        Play
+      </button>
+      <button class="btn btn-secondary" (click)="navigateToSettings()">
+        <span class="btn-icon">⚙</span>
+        Settings
+      </button>
+    </div>
+  </div>
+
+  <div class="decorative-board">
+    <div class="mini-board">
+      @for (row of [0,1,2,3,4,5,6,7]; track row) {
+        <div class="mini-row">
+          @for (col of [0,1,2,3,4,5,6,7]; track col) {
+            <div class="mini-cell" [class.light]="(row + col) % 2 === 0" [class.dark]="(row + col) % 2 !== 0"></div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>

@@ -1,0 +1,218 @@
+$board-size: min(80vh, 80vw, 640px);
+$square-size: calc(#{$board-size} / 8);
+
+.game-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background: var(--bg-primary);
+  padding: 1rem;
+}
+
+.player-bar {
+  width: calc(#{$board-size} + 48px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+}
+
+.player-info {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+
+  .player-piece {
+    font-size: 1.4rem;
+    line-height: 1;
+  }
+
+  .player-name {
+    font-family: 'Crimson Text', Georgia, serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .player-score {
+    background: var(--surface);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+}
+
+.exit-btn {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-family: 'Crimson Text', Georgia, serif;
+  letter-spacing: 0.05em;
+  padding: 0.35rem 0.9rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: #c0392b;
+    color: #e74c3c;
+  }
+}
+
+.status-message {
+  font-family: 'Crimson Text', Georgia, serif;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  font-style: italic;
+
+  &.in-check-msg {
+    color: #e74c3c;
+    font-weight: 600;
+    font-style: normal;
+    animation: pulse 0.5s ease;
+  }
+}
+
+.board-wrapper {
+  position: relative;
+  display: grid;
+  grid-template-columns: 20px $board-size 20px;
+  grid-template-rows: $board-size 20px;
+  gap: 4px;
+}
+
+.labels {
+  display: flex;
+
+  .label {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &.rank-labels {
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  &.file-labels {
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    grid-column: 2;
+    grid-row: 2;
+  }
+}
+
+.chess-board {
+  display: grid;
+  grid-template-columns: repeat(8, $square-size);
+  grid-template-rows: repeat(8, $square-size);
+  grid-column: 2;
+  grid-row: 1;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.square {
+  width: $square-size;
+  height: $square-size;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: filter 0.1s;
+
+  &:hover {
+    filter: brightness(1.05);
+  }
+
+  // Wood theme
+  .theme-wood & {
+    &.light { background: #f0d9b5; }
+    &.dark { background: #b58863; }
+    &.selected { background: #7fc97f !important; }
+    &.in-check { background: #e74c3c !important; }
+  }
+
+  // Standard theme
+  .theme-standard & {
+    &.light { background: #ffffff; }
+    &.dark { background: #444444; }
+    &.selected { background: #7fc97f !important; }
+    &.in-check { background: #e74c3c !important; }
+  }
+}
+
+.piece {
+  font-size: calc(#{$square-size} * 0.72);
+  line-height: 1;
+  user-select: none;
+  position: relative;
+  z-index: 2;
+  transition: transform 0.1s;
+
+  &.white-piece {
+    color: #ffffff;
+    text-shadow:
+      -1px -1px 0 #000,
+       1px -1px 0 #000,
+      -1px  1px 0 #000,
+       1px  1px 0 #000;
+  }
+
+  &.black-piece {
+    color: #1a1a1a;
+    text-shadow:
+      -1px -1px 0 #fff,
+       1px -1px 0 #fff,
+      -1px  1px 0 #fff,
+       1px  1px 0 #fff;
+  }
+  .square:hover & {
+    transform: scale(1.05);
+  }
+
+  .selected & {
+    transform: scale(1.1);
+  }
+}
+
+.move-dot {
+  width: 28%;
+  height: 28%;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.22);
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.capture-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 4px solid rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.5; }
+  100% { opacity: 1; }
+}

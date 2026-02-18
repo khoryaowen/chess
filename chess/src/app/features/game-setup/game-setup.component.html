@@ -1,0 +1,97 @@
+<div class="setup-container">
+  <div class="setup-card">
+    <button class="back-btn" (click)="goBack()">← Back</button>
+
+    <h2 class="setup-title">Game Setup</h2>
+
+    <div class="form-section">
+      <h3 class="section-label">Players</h3>
+
+      <div class="player-inputs">
+        <div class="player-input-group">
+          <span class="player-badge white-badge">♙</span>
+          <div class="input-wrapper">
+            <label>Player 1</label>
+            <input
+              type="text"
+              [ngModel]="player1Name()"
+              (ngModelChange)="player1Name.set($event)"
+              placeholder="Player 1 name"
+              maxlength="20"
+            />
+          </div>
+        </div>
+
+        <div class="player-input-group">
+          <span class="player-badge black-badge">♟</span>
+          <div class="input-wrapper">
+            <label>Player 2</label>
+            <input
+              type="text"
+              [ngModel]="player2Name()"
+              (ngModelChange)="player2Name.set($event)"
+              placeholder="Player 2 name"
+              maxlength="20"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3 class="section-label">Game Mode</h3>
+      <div class="toggle-group">
+        <button
+          class="toggle-btn"
+          [class.active]="gameMode() === 'pvp'"
+          (click)="setGameMode('pvp')"
+        >
+          <span>⚔</span> Player vs Player
+        </button>
+        <button
+          class="toggle-btn disabled"
+          [class.active]="gameMode() === 'pvc'"
+          (click)="setGameMode('pvc')"
+          disabled
+          title="Coming soon"
+        >
+          <span>🤖</span> Player vs Computer <span class="soon-tag">Soon</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3 class="section-label">Player 1 Colour</h3>
+      <div class="color-selector">
+        <button
+          class="color-btn"
+          [class.active]="player1Color() === 'white'"
+          (click)="setColor('white')"
+        >
+          <span class="piece-preview">♔</span>
+          White
+        </button>
+        <button
+          class="color-btn"
+          [class.active]="player1Color() === 'black'"
+          (click)="setColor('black')"
+        >
+          <span class="piece-preview">♚</span>
+          Black
+        </button>
+        <button
+          class="color-btn"
+          [class.active]="player1Color() === 'random'"
+          (click)="setColor('random')"
+        >
+          <span class="piece-preview">🎲</span>
+          Random
+        </button>
+      </div>
+    </div>
+
+    <button class="start-btn" (click)="startGame()">
+      Begin Game
+    </button>
+  </div>
+</div>

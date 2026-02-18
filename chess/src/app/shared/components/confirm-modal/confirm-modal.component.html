@@ -1,0 +1,17 @@
+<div class="modal-overlay" (click)="cancelled.emit()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
+    <div class="modal-icon">⚐</div>
+    <h2 class="modal-title">{{ title }}</h2>
+    @if (message) {
+      <p class="modal-message">{{ message }}</p>
+    }
+    <div class="modal-actions">
+      <button class="btn btn-danger" (click)="confirmed.emit()">
+        {{ confirmLabel }}
+      </button>
+      <button class="btn btn-secondary" (click)="cancelled.emit()">
+        {{ cancelLabel }}
+      </button>
+    </div>
+  </div>
+</div>
